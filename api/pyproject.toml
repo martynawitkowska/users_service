@@ -1,0 +1,15 @@
+django-admin startproject config .[tool.poetry]
+name = "users service"
+version = "0.1.0"
+description = "To be done."
+authors = ["Martyna Witkowska <mar.witkowska@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+django = "4.2.17"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
