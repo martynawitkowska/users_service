@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("openapi/", SpectacularAPIView.as_view(), name="openapi"),
+    path("", SpectacularSwaggerView.as_view(url_name="openapi"), name="swagger"),
 ]
