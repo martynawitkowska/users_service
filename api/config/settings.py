@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1(rx%ll(tok+huzew6uolb^e186dcnkf!hu^qn8pwm29it5%&6'
+SECRET_KEY = os.environ.get("DJ_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DJ_DEBUG", 0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJ_ALLOWED_HOSTS", "").split()
 
 # Application definition
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     # local
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +121,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Override default user model for django
+# https://docs.djangoproject.com/en/5.1/topics/auth/customizing/#substituting-a-custom-user-model
+AUTH_USER_MODEL = 'users.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
