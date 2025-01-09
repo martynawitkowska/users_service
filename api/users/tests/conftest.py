@@ -1,5 +1,6 @@
 import pytest
-from users.models import Tenant, Organization, Department
+
+from users.models import Department, Organization, Tenant
 
 
 @pytest.fixture

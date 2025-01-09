@@ -1,8 +1,9 @@
 import pytest
-from users.models import Department, Organization, Tenant
 from django.db.utils import IntegrityError
 from django.utils.timezone import now
 from freezegun import freeze_time
+
+from users.models import Customer
 
 
 @pytest.mark.django_db
@@ -88,3 +89,35 @@ def test_create_superuser_without_is_staff_raises_error(django_user_model):
 def test_create_superuser_without_is_superuser_raises_error(django_user_model):
     with pytest.raises(ValueError, match="Superuser must have is_superuser=True."):
         django_user_model.objects.create_superuser(email="admin@example.com", password="adminpass", is_superuser=False)
+
+
+@pytest.mark.django_db
+def test_create_customer(django_user_model):
+    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
+    customer = Customer.objects.create(user=user)
+    assert customer.user == user
+    assert customer.created_at is not None
+    assert customer.updated_at is not None
+
+
+@pytest.mark.django_db
+def test_customer_str_representation(django_user_model):
+    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
+    customer = Customer.objects.create(user=user)
+    assert str(customer) == "test_customer@example.com - Customer"
+
+
+@pytest.mark.django_db
+def test_customer_user_relationship(django_user_model):
+    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
+    customer = Customer.objects.create(user=user)
+    assert user.customer == customer
+
+
+@pytest.mark.django_db
+def test_customer_unique_user_constraint(django_user_model):
+    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
+    Customer.objects.create(user=user)
+    with pytest.raises(IntegrityError):
+        Customer.objects.create(user=user)
+
