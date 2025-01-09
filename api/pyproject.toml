@@ -45,12 +45,12 @@ omit = [
 ruff = "0.8.6"
 
 [tool.ruff]
-include = ["pyproject.toml", "core/**/*.py", "tests/**/*.py"]
+select = ["A", "B", "C4", "E", "F", "I", "DJ", "INP", "TID", "UP", "YTT"]
+include = ["pyproject.toml"]
 target-version = "py313"
 line-length = 120
 
 [tool.ruff.format]
-exclude = ["docs"]
 quote-style = "single"
 indent-style = "tab"
 
