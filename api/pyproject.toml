@@ -15,16 +15,16 @@ djangorestframework-simplejwt = "5.4.0"
 drf-spectacular = "0.28.0"
 pytest-django = "4.9.0"
 pytest-cov = "6.0.0"
+freezegun = "1.5.1"
 
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "conftest_*.py"]
+
 minversion = "6.0"
 testpaths = [
-    "tests",
+    "*/tests",
     "conftest"
-]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "smoke: buisiness core logic",
 ]
 
 addopts = [
@@ -37,7 +37,10 @@ addopts = [
 
 [tool.coverage.run]
 omit = [
-   "*/tests/*.py"
+   "*/tests/*.py",
+    "*/migrations/*",
+    "config/*",
+    "manage.py"
 ]
 
 
