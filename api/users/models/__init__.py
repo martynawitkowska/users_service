@@ -1,4 +1,4 @@
-from .user import CustomUser
-from .tenant import Tenant
-from .organization import Organization
-from .department import Department
+from .department import Department as Department
+from .organization import Organization as Organization
+from .tenant import Tenant as Tenant
+from .user import CustomUser as CustomUser

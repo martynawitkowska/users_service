@@ -1,1 +1,1 @@
-from .timestamp_abstract_model import TimestampAbstractModel
+from .timestamp_abstract_model import TimestampAbstractModel as TimestampAbstractModel
