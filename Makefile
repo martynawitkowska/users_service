@@ -8,7 +8,7 @@ ruff-format:
 	docker compose exec $(SERVICE) ruff format
 
 ruff-lint:
-	docker compose exec $(SERVICE) ruff check
+	docker compose exec $(SERVICE) ruff check --fix
 
 ruff-isort:
 	docker compose exec $(SERVICE) ruff check --select I --fix
