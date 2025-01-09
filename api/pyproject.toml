@@ -45,14 +45,19 @@ omit = [
 ruff = "0.8.6"
 
 [tool.ruff]
-select = ["A", "B", "C4", "E", "F", "I", "DJ", "INP", "TID", "UP", "YTT"]
-include = ["pyproject.toml"]
+include = ["pyproject.toml", "**/*.py"]
+exclude = ["**/migrations"]
 target-version = "py313"
 line-length = 120
 
+[tool.ruff.lint]
+select = ["A", "B", "C4", "E", "W", "F", "I", "DJ", "INP", "TID", "UP", "YTT"]
+fixable = ["A", "B", "C4", "E", "W", "F", "I", "TID", "UP"]
+ignore = ["W191"]
+
 [tool.ruff.format]
 quote-style = "single"
-indent-style = "tab"
+indent-style="tab"
 
 [build-system]
 requires = ["poetry-core"]
