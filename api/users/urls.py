@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
-from .viewsets import TenantViewSet, OrganizationViewSet, DepartmentViewSet, CustomerViewSet
+
+from .viewsets import CustomerViewSet, DepartmentViewSet, OrganizationViewSet, TenantViewSet
 
 app_name = 'users'
 
