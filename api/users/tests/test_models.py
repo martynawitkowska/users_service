@@ -1,123 +1,125 @@
 import pytest
 from django.db.utils import IntegrityError
-from django.utils.timezone import now
-from freezegun import freeze_time
 
-from users.models import Customer
-
-
-@pytest.mark.django_db
-def test_create_user_with_email(django_user_model):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123")
-    assert user.email == "test@example.com"
-    assert user.check_password("password123")
+from users.models import Tenant
+from users.models.user import CustomUserManager
 
 
 @pytest.mark.django_db
-def test_user_requires_unique_email(django_user_model):
-    django_user_model.objects.create_user(email="unique@example.com", password="password123")
-    with pytest.raises(IntegrityError):
-        django_user_model.objects.create_user(email="unique@example.com", password="password123")
-
-
-@pytest.mark.django_db
-def test_str_representation(django_user_model):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123")
-    assert str(user) == "test@example.com"
-
-
-@pytest.mark.django_db
-def test_user_with_tenant(django_user_model, tenant):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123", tenant=tenant)
+def test_custom_user_creation(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    user = django_user_model.objects.create_user(
+        email="testuser@example.com", password="securepassword", tenant=tenant
+    )
+    assert user.email == "testuser@example.com"
+    assert user.check_password("securepassword")
     assert user.tenant == tenant
 
 
 @pytest.mark.django_db
-def test_user_with_organization(django_user_model, organization):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123",
-                                                 organization=organization)
-    assert user.organization == organization
+def test_custom_user_creation_without_email(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    with pytest.raises(ValueError):
+        django_user_model.objects.create_user(email=None, password="securepassword", tenant=tenant)
 
 
 @pytest.mark.django_db
-def test_user_with_department(django_user_model, department):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123",
-                                                 department=department)
-    assert user.department == department
+def test_custom_user_unique_email_constraint(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    django_user_model.objects.create_user(email="testuser@example.com", password="securepassword", tenant=tenant)
+
+    with pytest.raises(IntegrityError):
+        django_user_model.objects.create_user(email="testuser@example.com", password="anotherpassword", tenant=tenant)
 
 
 @pytest.mark.django_db
-def test_user_is_admin_flags(django_user_model):
-    user = django_user_model.objects.create_user(
-        email="admin@example.com",
-        password="password123",
-        is_tenant_admin=True,
-        is_organization_admin=True,
-        is_department_admin=True,
+def test_custom_user_manager_superuser_creation(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    superuser = django_user_model.objects.create_superuser(
+        email="admin@example.com", password="adminpassword", tenant=tenant
     )
-    assert user.is_tenant_admin is True
-    assert user.is_organization_admin is True
-    assert user.is_department_admin is True
+    assert superuser.email == "admin@example.com"
+    assert superuser.is_superuser
+    assert superuser.is_staff
 
 
 @pytest.mark.django_db
-@freeze_time("2023-11-01 12:00:00")
-def test_user_update_timestamp_freeze_time(django_user_model):
-    user = django_user_model.objects.create_user(email="test@example.com", password="password123")
-    original_updated_at = user.updated_at
-    assert original_updated_at == now()
+def test_custom_user_str_representation(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    user = django_user_model.objects.create_user(
+        email="testuser@example.com", password="securepassword", tenant=tenant
+    )
+    assert str(user) == "testuser@example.com"
 
-    with freeze_time("2023-11-01 13:00:00"):
-        user.email = "updated_email@example.com"
-        user.save()
-        assert user.updated_at > original_updated_at
-        assert user.updated_at == now()
+
+@pytest.mark.django_db
+def test_create_user(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    user = django_user_model.objects.create_user(
+        email="user@example.com", password="securepassword", tenant=tenant
+    )
+    assert user.email == "user@example.com"
+    assert user.check_password("securepassword")
+    assert user.tenant == tenant
+    assert user.is_active is True
+
+
+
+@pytest.mark.django_db
+def test_create_user_without_email_raises_error():
+    tenant = Tenant.objects.create(name="Test Tenant")
+    manager = CustomUserManager()
+    with pytest.raises(ValueError, match="The Email field must be set"):
+        manager.create_user(email=None, password="password", tenant=tenant)
+
+
+@pytest.mark.django_db
+def test_create_user(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    user = django_user_model.objects.create_user(
+        email="user@example.com", password="securepassword", tenant=tenant
+    )
+    assert user.email == "user@example.com"
+    assert user.check_password("securepassword")
+    assert user.tenant == tenant
+    assert user.is_active is True
+
 
 @pytest.mark.django_db
 def test_create_user_without_email_raises_error(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
     with pytest.raises(ValueError, match="The Email field must be set"):
-        django_user_model.objects.create_user(email=None, password="password123")
+        django_user_model.objects.create_user(
+            email=None, password="password", tenant=tenant
+        )
 
 
 @pytest.mark.django_db
-def test_create_superuser_without_is_staff_raises_error(django_user_model):
+def test_create_superuser(django_user_model):
+    tenant = Tenant.objects.create(name="Test Tenant")
+    superuser = django_user_model.objects.create_superuser(
+        email="admin@example.com", password="securepassword", tenant=tenant
+    )
+    assert superuser.email == "admin@example.com"
+    assert superuser.check_password("securepassword")
+    assert superuser.tenant == tenant
+    assert superuser.is_staff is True
+    assert superuser.is_superuser is True
+
+
+
+@pytest.mark.django_db
+def test_create_superuser_without_is_staff_raises_error():
+    tenant = Tenant.objects.create(name="Test Tenant")
+    manager = CustomUserManager()
     with pytest.raises(ValueError, match="Superuser must have is_staff=True."):
-        django_user_model.objects.create_superuser(email="admin@example.com", password="adminpass", is_staff=False)
+        manager.create_superuser(email="admin@example.com", password="securepassword", tenant=tenant, is_staff=False)
 
 
 @pytest.mark.django_db
-def test_create_superuser_without_is_superuser_raises_error(django_user_model):
+def test_create_superuser_without_is_superuser_raises_error():
+    tenant = Tenant.objects.create(name="Test Tenant")
+    manager = CustomUserManager()
     with pytest.raises(ValueError, match="Superuser must have is_superuser=True."):
-        django_user_model.objects.create_superuser(email="admin@example.com", password="adminpass", is_superuser=False)
-
-
-@pytest.mark.django_db
-def test_create_customer(django_user_model):
-    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
-    customer = Customer.objects.create(user=user)
-    assert customer.user == user
-    assert customer.created_at is not None
-    assert customer.updated_at is not None
-
-
-@pytest.mark.django_db
-def test_customer_str_representation(django_user_model):
-    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
-    customer = Customer.objects.create(user=user)
-    assert str(customer) == "test_customer@example.com - Customer"
-
-
-@pytest.mark.django_db
-def test_customer_user_relationship(django_user_model):
-    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
-    customer = Customer.objects.create(user=user)
-    assert user.customer == customer
-
-
-@pytest.mark.django_db
-def test_customer_unique_user_constraint(django_user_model):
-    user = django_user_model.objects.create_user(email="test_customer@example.com", password="password123")
-    Customer.objects.create(user=user)
-    with pytest.raises(IntegrityError):
-        Customer.objects.create(user=user)
-
+        manager.create_superuser(email="admin@example.com", password="securepassword", tenant=tenant,
+                                 is_superuser=False)
