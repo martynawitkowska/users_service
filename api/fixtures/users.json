@@ -101,24 +101,6 @@
   },
   {
     "model": "users.customuser",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$600000$nAlRo2JHYo6T9BWwyYg0ze$4y3mMUpZKpGCDsK25wXpSZifPHPL35BLNeoSEck7R2Y=",
-      "last_login": "2025-01-09T20:42:16.537Z",
-      "is_superuser": true,
-      "first_name": "",
-      "last_name": "",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2025-01-09T19:55:56.153Z",
-      "email": "a@a.pl",
-      "tenant": null,
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "users.customuser",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$600000$PEAgXo1tZOG3pTQKcUDA3S$Hyj2GbdP3dk7mMplTgljoKXsFHUUClQRAeOBQ/OftcI=",

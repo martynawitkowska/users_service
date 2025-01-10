@@ -18,3 +18,6 @@ pytest:
 
 pytest-cov:
 	docker compose exec $(SERVICE) pytest --cov-report html:cov_html
+
+loaddata:
+	docker compose exec $(SERVICE) python manage.py loaddata fixtures/users.json
