@@ -1,0 +1,174 @@
+[
+  {
+    "model": "users.tenant",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-09T20:43:41.679Z",
+      "updated_at": "2025-01-09T20:43:41.679Z",
+      "name": "Piri piri",
+      "domain": "piripiri.pl"
+    }
+  },
+  {
+    "model": "users.tenant",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-09T21:02:55.275Z",
+      "updated_at": "2025-01-09T21:02:55.275Z",
+      "name": "Sad People",
+      "domain": "sadpeople.com"
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-09T21:02:07.533Z",
+      "updated_at": "2025-01-09T21:02:07.533Z",
+      "name": "PiriPiri Stuff",
+      "tenant": 1
+    }
+  },
+  {
+    "model": "users.organization",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-09T21:04:02.886Z",
+      "updated_at": "2025-01-09T21:04:02.886Z",
+      "name": "Sad People Stuff",
+      "tenant": 2
+    }
+  },
+  {
+    "model": "users.department",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-09T21:02:19.328Z",
+      "updated_at": "2025-01-09T21:02:19.328Z",
+      "name": "IT",
+      "organization": 1
+    }
+  },
+  {
+    "model": "users.department",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-09T21:04:16.710Z",
+      "updated_at": "2025-01-09T21:04:16.710Z",
+      "name": "HR",
+      "organization": 2
+    }
+  },
+  {
+    "model": "users.department",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-01-10T09:23:15.486Z",
+      "updated_at": "2025-01-10T09:23:15.486Z",
+      "name": "HR",
+      "organization": 1
+    }
+  },
+  {
+    "model": "users.customer",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-01-10T08:03:51.106Z",
+      "updated_at": "2025-01-10T08:03:51.106Z",
+      "user": 2,
+      "department": 1
+    }
+  },
+  {
+    "model": "users.customer",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-01-10T08:03:58.662Z",
+      "updated_at": "2025-01-10T08:03:58.662Z",
+      "user": 3,
+      "department": 2
+    }
+  },
+  {
+    "model": "users.customer",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-01-10T09:22:53.256Z",
+      "updated_at": "2025-01-10T09:23:40.776Z",
+      "user": 4,
+      "department": 3
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$nAlRo2JHYo6T9BWwyYg0ze$4y3mMUpZKpGCDsK25wXpSZifPHPL35BLNeoSEck7R2Y=",
+      "last_login": "2025-01-09T20:42:16.537Z",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-01-09T19:55:56.153Z",
+      "email": "a@a.pl",
+      "tenant": null,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$PEAgXo1tZOG3pTQKcUDA3S$Hyj2GbdP3dk7mMplTgljoKXsFHUUClQRAeOBQ/OftcI=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Zdzisław",
+      "last_name": "Zdzisławski",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-09T20:42:25Z",
+      "email": "zdzislaw.zdzislawski@piripiri.pl",
+      "tenant": 1,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$kOmZtAvJHN3zLSGLsIfzPs$4Ka0juHRA/B5/bHYkGVEGTJJN9/eQI8kNiexnKXu+fc=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Grażyna",
+      "last_name": "Grażewska",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-09T21:02:58Z",
+      "email": "grazyna.grazewska@sadpeople.com",
+      "tenant": 2,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$z5DgdL9QkmCiFcNrx1kFTm$sBqd6r90XiN3wzP/2yYiGIVS3Xe3gtKx2pxm05Q1otU=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-01-10T09:22:18Z",
+      "email": "henryk.zdzislawski@piripiri.pl",
+      "tenant": 1,
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
