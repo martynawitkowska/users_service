@@ -8,4 +8,6 @@ while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
 
   echo "PostgreSQL started"
 
+python manage.py migrate
+
 exec "$@"
